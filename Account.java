@@ -1,5 +1,4 @@
 package CurrencyExchange;
-
 public class Account {
 	private String userName;
 	private String password;
@@ -30,7 +29,6 @@ public class Account {
 	}
 	@Override
 	public String toString() {
-		return "Account [userName=" + userName + ", password=" + password + ", email=" + email + "]";
+		return "Account [userName = " + userName + ", password = " + password + ", email = " + email + "]";
 	}
-	
 }
