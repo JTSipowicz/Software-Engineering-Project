@@ -60,6 +60,6 @@ public class AppEngine {
 		}
 		integerScanner.close();
 		System.out.println(accountList.toString());
-		System.out.println("Implemented by: James Sipowicz");
+		System.out.println("Implemented by: James Sipowicz, Mason Watson, Tyler Hanson, Jafeth Zuniga");
 	}
 }
