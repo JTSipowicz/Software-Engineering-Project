@@ -1,34 +1,20 @@
 package CurrencyExchange;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Color;
-import java.awt.Window.Type;
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
-import java.awt.Canvas;
-import javax.swing.JPasswordField;
-import java.awt.Label;
-import javax.swing.JSpinner;
-import java.awt.Panel;
-import javax.swing.JToolBar;
+import java.awt.Color;
+import java.awt.Font;
 
-public class Application extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField textField;
-	private JPasswordField passwordField;
+public class Application {
+
+	private JFrame frame;
 
 	/**
 	 * Launch the application.
@@ -37,82 +23,116 @@ public class Application extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Application frame = new Application();
-					frame.setVisible(true);
+					Application window = new Application();
+					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-
+	Connection connection = null;
+	private JTextField userField;
+	private JPasswordField passField;
 	/**
-	 * Create the frame.
+	 * Create the application.
 	 */
 	public Application() {
-		setForeground(new Color(204, 0, 102));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(150, 150, 700, 500);
-		contentPane = new JPanel();
-		contentPane.setForeground(new Color(51, 102, 153));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		initialize();
+		// Begin SQLite connection
+		connection = SQLiteConnection.databaseConnection();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.getContentPane().setBackground(new Color(230, 230, 250));
+		frame.setBounds(150, 150, 700, 500);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(567, 295, 96, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		userField = new JTextField();
+		userField.setFont(new Font("Calibri", Font.PLAIN, 11));
+		userField.setBounds(577, 319, 100, 20);
+		frame.getContentPane().add(userField);
+		userField.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Username:");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1.setFont(new Font("Calibri", Font.PLAIN, 12));
-		lblNewLabel_1.setBounds(498, 300, 59, 14);
-		contentPane.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_2 = new JLabel("Password:");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_2.setFont(new Font("Calibri", Font.PLAIN, 12));
-		lblNewLabel_2.setBounds(485, 331, 72, 14);
-		contentPane.add(lblNewLabel_2);
-		
-		JButton btnNewButton = new JButton("Sign In");
-		btnNewButton.setFont(new Font("Bahnschrift", Font.PLAIN, 11));
-		btnNewButton.setBounds(567, 357, 96, 23);
-		contentPane.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Register");
-		btnNewButton_1.setFont(new Font("Bahnschrift", Font.PLAIN, 11));
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JButton signInButton = new JButton("Sign In");
+		signInButton.addActionListener(new ActionListener() {
+			// SQL query expression
+			public void actionPerformed(ActionEvent arg0) {
+				String query = "select * from AccountInfo where username=? and password=?";
+				try {
+					PreparedStatement preparedStatement = connection.prepareStatement(query);
+					preparedStatement.setString(1, userField.getText().toLowerCase());
+					//JOptionPane.showMessageDialog(null, "userField Entry: " + userField.getText());
+					preparedStatement.setString(2, passField.getText());
+					//JOptionPane.showMessageDialog(null, "passField Entry: " + passField.getText());
+					//Result Sets
+					ResultSet resultSet = preparedStatement.executeQuery();
+					int count = 0;
+					while(resultSet.next()) {
+						count = count++;
+					}
+					if(count == 1) {
+						JOptionPane.showMessageDialog(null, "Username and password is correct");
+					} else if(count > 1) {
+						// Condition to check if there is a duplicate username in the database
+						JOptionPane.showMessageDialog(null, "Duplicate Username and password");
+					} else {
+						JOptionPane.showMessageDialog(null, "Username and password are invalid, try again!");
+					}
+					// SQL only provides one connection at a time
+					resultSet.close();
+					preparedStatement.close();
+				}catch(Exception ex){
+						JOptionPane.showMessageDialog(null, ex);
+				}
 			}
-		});
-		btnNewButton_1.setBounds(567, 409, 96, 24);
-		contentPane.add(btnNewButton_1);
+		}); 
+		signInButton.setFont(new Font("Calibri", Font.BOLD, 11));
+		signInButton.setBounds(578, 381, 100, 20);
+		frame.getContentPane().add(signInButton);
 		
-		JLabel lblNewLabel_3 = new JLabel("Create an account!");
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_3.setFont(new Font("Calibri", Font.PLAIN, 12));
-		lblNewLabel_3.setBounds(443, 399, 114, 48);
-		contentPane.add(lblNewLabel_3);
+		JButton registerButton = new JButton("Register");
+		registerButton.setFont(new Font("Calibri", Font.BOLD, 11));
+		registerButton.setBounds(578, 427, 100, 20);
+		frame.getContentPane().add(registerButton);
 		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(567, 326, 96, 20);
-		contentPane.add(passwordField);
+		JLabel welcomeLabel = new JLabel("Welcome to our Currency Exchange Application");
+		welcomeLabel.setFont(new Font("Calibri Light", Font.PLAIN, 14));
+		welcomeLabel.setBounds(10, 11, 286, 14);
+		frame.getContentPane().add(welcomeLabel);
 		
-		JLabel lblNewLabel = new JLabel("Welcome to our Currency Exchange Application.");
-		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 12));
-		lblNewLabel.setBackground(new Color(255, 255, 224));
-		lblNewLabel.setBounds(10, 2, 270, 20);
-		contentPane.add(lblNewLabel);
+		JLabel authorLabel = new JLabel("James Sipowicz, Mason Watson, Tyler Hanson, Jafeth Zuniga");
+		authorLabel.setForeground(new Color(0, 0, 139));
+		authorLabel.setFont(new Font("Calibri", Font.PLAIN, 10));
+		authorLabel.setBounds(10, 436, 253, 14);
+		frame.getContentPane().add(authorLabel);
 		
-//		JLabel lblNewLabel_4 = new JLabel("");
-//		Image img = new ImageIcon(this.getClass().getResource("/CurrencyExchange/images/BackgroundImage.jpg")).getImage();
-//		lblNewLabel_4.setIcon(new ImageIcon(img));
-//		lblNewLabel_4.setBounds(20, 33, 400, 400);
-//		contentPane.add(lblNewLabel_4);
+		JLabel createAccountLabel = new JLabel("Create an account");
+		createAccountLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
+		createAccountLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		createAccountLabel.setBounds(466, 430, 102, 14);
+		frame.getContentPane().add(createAccountLabel);
 		
+		JLabel userLabel = new JLabel("Username :");
+		userLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
+		userLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		userLabel.setBounds(505, 322, 62, 14);
+		frame.getContentPane().add(userLabel);
 		
+		JLabel passLabel = new JLabel("Password :");
+		passLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
+		passLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		passLabel.setBounds(505, 353, 62, 14);
+		frame.getContentPane().add(passLabel);
 		
+		passField = new JPasswordField();
+		passField.setFont(new Font("Calibri", Font.PLAIN, 11));
+		passField.setBounds(577, 348, 100, 20);
+		frame.getContentPane().add(passField);
 	}
 }
