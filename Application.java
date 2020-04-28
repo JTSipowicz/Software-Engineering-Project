@@ -74,7 +74,7 @@ public class Application {
 					ResultSet resultSet = preparedStatement.executeQuery();
 					int count = 0;
 					while(resultSet.next()) {
-						count = count++;
+						count = count + 1;
 					}
 					if(count == 1) {
 						JOptionPane.showMessageDialog(null, "Username and password is correct");
