@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 
 
 public class Application {
@@ -67,9 +68,7 @@ public class Application {
 				try {
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setString(1, userField.getText().toLowerCase());
-					//JOptionPane.showMessageDialog(null, "userField Entry: " + userField.getText());
 					preparedStatement.setString(2, passField.getText());
-					//JOptionPane.showMessageDialog(null, "passField Entry: " + passField.getText());
 					//Result Sets
 					ResultSet resultSet = preparedStatement.executeQuery();
 					int count = 0;
@@ -78,8 +77,10 @@ public class Application {
 					}
 					if(count == 1) {
 						JOptionPane.showMessageDialog(null, "Username and password is correct");
+						frame.dispose();
+						MainMenu mainMenu = new MainMenu();
+						mainMenu.setVisible(true);
 					} else if(count > 1) {
-						// Condition to check if there is a duplicate username in the database
 						JOptionPane.showMessageDialog(null, "Duplicate Username and password");
 					} else {
 						JOptionPane.showMessageDialog(null, "Username and password are invalid, try again!");
@@ -97,6 +98,13 @@ public class Application {
 		frame.getContentPane().add(signInButton);
 		
 		JButton registerButton = new JButton("Register");
+		registerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				Registration registration = new Registration();
+				registration.setVisible(true);
+			}
+		});
 		registerButton.setFont(new Font("Calibri", Font.BOLD, 11));
 		registerButton.setBounds(578, 427, 100, 20);
 		frame.getContentPane().add(registerButton);
@@ -134,5 +142,11 @@ public class Application {
 		passField.setFont(new Font("Calibri", Font.PLAIN, 11));
 		passField.setBounds(577, 348, 100, 20);
 		frame.getContentPane().add(passField);
+		
+		JLabel lblNewLabel = new JLabel("");
+		Image image = new ImageIcon(this.getClass().getResource("/CurrencyIcon.png")).getImage();
+		lblNewLabel.setIcon(new ImageIcon(image));
+		lblNewLabel.setBounds(63, 51, 350, 350);
+		frame.getContentPane().add(lblNewLabel);
 	}
 }
