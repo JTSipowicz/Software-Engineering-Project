@@ -20,13 +20,11 @@ import java.sql.PreparedStatement;
 import java.awt.event.ActionEvent;
 
 public class ModifyAccount extends JFrame {
-
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField passField;
 	private JTextField emailField;
 	private JTextField accountTypeField;
-
 	/**
 	 * Launch the application.
 	 */
@@ -146,5 +144,4 @@ public class ModifyAccount extends JFrame {
 		btnNewButton_1.setBounds(208, 177, 96, 23);
 		contentPane.add(btnNewButton_1);
 	}
-
 }
