@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -12,11 +11,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 
-
 public class Application {
-
 	private JFrame frame;
-
 	/**
 	 * Launch the application.
 	 */
@@ -43,7 +39,6 @@ public class Application {
 		// Begin SQLite connection
 		connection = SQLiteConnection.databaseConnection();
 	}
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -53,13 +48,11 @@ public class Application {
 		frame.setBounds(150, 150, 700, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
 		userField = new JTextField();
 		userField.setFont(new Font("Calibri", Font.PLAIN, 11));
 		userField.setBounds(577, 319, 100, 20);
 		frame.getContentPane().add(userField);
 		userField.setColumns(10);
-		
 		JButton signInButton = new JButton("Sign In");
 		signInButton.addActionListener(new ActionListener() {
 			// SQL query expression
@@ -96,7 +89,6 @@ public class Application {
 		signInButton.setFont(new Font("Calibri", Font.BOLD, 11));
 		signInButton.setBounds(578, 381, 100, 20);
 		frame.getContentPane().add(signInButton);
-		
 		JButton registerButton = new JButton("Register");
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
