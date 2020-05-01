@@ -2,7 +2,6 @@ package CurrencyExchange;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,9 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class MainMenu extends JFrame {
-
 	private JPanel contentPane;
-
 	/**
 	 * Launch the application.
 	 */
@@ -33,7 +30,6 @@ public class MainMenu extends JFrame {
 			}
 		});
 	}
-
 	/**
 	 * Create the frame.
 	 */
@@ -52,19 +48,28 @@ public class MainMenu extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JButton btnNewButton = new JButton("Current Balance");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane.setVisible(false);
+				dispose();
+				AccountBalance.main(null);
+			}
+		});
 		btnNewButton.setFont(new Font("Calibri", Font.BOLD, 13));
 		btnNewButton.setBounds(141, 69, 152, 92);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Make an Exchange");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane.setVisible(false);
+				dispose();
+				Transaction.main(null);
+			}
+		});
 		btnNewButton_1.setFont(new Font("Calibri", Font.BOLD, 13));
 		btnNewButton_1.setBounds(141, 186, 152, 92);
 		contentPane.add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("View Transactions");
-		btnNewButton_2.setFont(new Font("Calibri", Font.BOLD, 13));
-		btnNewButton_2.setBounds(376, 186, 152, 92);
-		contentPane.add(btnNewButton_2);
 		
 		JButton btnNewButton_3 = new JButton("Delete Your Account");
 		btnNewButton_3.addActionListener(new ActionListener() {
@@ -75,7 +80,7 @@ public class MainMenu extends JFrame {
 			}
 		});
 		btnNewButton_3.setFont(new Font("Calibri", Font.BOLD, 13));
-		btnNewButton_3.setBounds(141, 306, 152, 92);
+		btnNewButton_3.setBounds(376, 186, 152, 92);
 		contentPane.add(btnNewButton_3);
 		
 		JButton btnNewButton_4 = new JButton("Modify Account Info");
@@ -89,11 +94,6 @@ public class MainMenu extends JFrame {
 		btnNewButton_4.setFont(new Font("Calibri", Font.BOLD, 13));
 		btnNewButton_4.setBounds(376, 69, 152, 92);
 		contentPane.add(btnNewButton_4);
-		
-		JButton btnNewButton_5 = new JButton("Submit An Issue");
-		btnNewButton_5.setFont(new Font("Calibri", Font.BOLD, 13));
-		btnNewButton_5.setBounds(376, 306, 152, 92);
-		contentPane.add(btnNewButton_5);
 		
 		JButton btnNewButton_6 = new JButton("Log Out");
 		btnNewButton_6.addActionListener(new ActionListener() {
@@ -113,5 +113,4 @@ public class MainMenu extends JFrame {
 		lblNewLabel_1.setBounds(342, 431, 234, 14);
 		contentPane.add(lblNewLabel_1);
 	}
-
 }
