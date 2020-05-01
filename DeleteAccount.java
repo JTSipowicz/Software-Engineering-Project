@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -13,7 +12,6 @@ import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -22,9 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class DeleteAccount extends JFrame {
-
 	private JPanel contentPane;
-
 	/**
 	 * Launch the application.
 	 */
@@ -96,7 +92,7 @@ public class DeleteAccount extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				contentPane.setVisible(false);
 				dispose();
-				Application.main(null);
+				MainMenu.main(null);
 			}
 		});
 		btnNewButton.setFont(new Font("Calibri", Font.PLAIN, 11));
@@ -112,6 +108,9 @@ public class DeleteAccount extends JFrame {
 					preparedStatement.execute();
 					JOptionPane.showMessageDialog(null, "Account Has Been Deleted");
 					preparedStatement.close();
+					contentPane.setVisible(false);
+					dispose();
+					Application.main(null);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -133,4 +132,3 @@ public class DeleteAccount extends JFrame {
 		contentPane.add(lblNewLabel_5);
 	}
 }
-
